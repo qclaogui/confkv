@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/qclaogui/confkv"
 )
@@ -16,6 +17,7 @@ var keysHasPrefix = []string{
 func main() {
 	ckv := confkv.Watch(confkv.Prefix(prefix), confkv.Keys(keysHasPrefix),
 		confkv.Zookeeper("127.0.0.1:2181", "127.0.0.1:2182"))
+	time.Sleep(time.Second)
 
 	vs, err := confkv.Store.GetAllValues("/app/upstream/*")
 	if err != nil {
