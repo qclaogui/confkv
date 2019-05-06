@@ -6,13 +6,14 @@ import (
 	"time"
 
 	"github.com/qclaogui/kv/backends"
+	"github.com/qclaogui/kvdb"
 )
 
 var defaultPrefix = "/"
 
-var DB *storeX
+var DB *kvdb.Store
 
-func init() { DB = NewDB() }
+func init() { DB = kvdb.NewDB() }
 
 type conf struct {
 	prefix string

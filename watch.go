@@ -46,7 +46,7 @@ func (wp *watchProcessor) Process() {
 		log.Printf("Got the following map from backend: %v\n\n", result)
 
 		// 重新赋值
-		DB.purge()
+		DB.Purge()
 		for k, v := range result {
 			DB.Set(k, v)
 		}
