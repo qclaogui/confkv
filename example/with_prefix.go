@@ -16,9 +16,9 @@ func main() {
 	defer kv.Watch(kv.Prefix(prefix), kv.Keys(keysHasPrefix)).Stop()
 	time.Sleep(time.Second)
 
-	vs, err := kv.DB.GetAllValues("/app/upstream/*")
+	vs, err := kv.DB.GetVs("/app/upstream/*")
 	if err != nil {
-		fmt.Printf("GetAllValues error %v \n\n", err)
+		fmt.Printf("GetVs error %v \n\n", err)
 	}
 
 	fmt.Printf("%v \n\n", vs)

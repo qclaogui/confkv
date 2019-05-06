@@ -6,29 +6,29 @@ import (
 	"sync"
 )
 
-type StoreX struct{ m *sync.Map }
+type storeX struct{ m *sync.Map }
 
-func NewStoreX() *StoreX { return &StoreX{new(sync.Map)} }
+func NewStoreX() *storeX { return &storeX{new(sync.Map)} }
 
-func (s *StoreX) Set(key, value string) { s.m.Store(key, KVPair{key, value}) }
+func (s *storeX) Set(key, value string) { s.m.Store(key, kvPair{key, value}) }
 
-func (s *StoreX) Exists(key string) bool {
-	if _, err := s.Get(key); err != nil {
+func (s *storeX) Exists(key string) bool {
+	if _, err := s.get(key); err != nil {
 		return false
 	}
 	return true
 }
 
-func (s *StoreX) Get(key string) (KVPair, error) {
+func (s *storeX) get(key string) (kvPair, error) {
 	if v, ok := s.m.Load(key); !ok {
-		return KVPair{}, ErrNotExist
+		return kvPair{}, ErrNotExist
 	} else {
-		return v.(KVPair), nil
+		return v.(kvPair), nil
 	}
 }
 
-func (s *StoreX) GetValue(key string, defaultValue ...string) (string, error) {
-	kv, err := s.Get(key)
+func (s *storeX) GetV(key string, defaultValue ...string) (string, error) {
+	kv, err := s.get(key)
 	if err != nil {
 		// 如果有设置默认值,将返回defaultValue中的第一个作为默认值
 		if len(defaultValue) > 0 {
@@ -39,10 +39,10 @@ func (s *StoreX) GetValue(key string, defaultValue ...string) (string, error) {
 	return kv.Value, nil
 }
 
-func (s *StoreX) GetAll(pattern string) (KVPairs, error) {
-	kvs := make(KVPairs, 0)
+func (s *storeX) getAll(pattern string) (kvPairs, error) {
+	kvs := make(kvPairs, 0)
 	s.m.Range(func(_, value interface{}) bool {
-		kv := value.(KVPair)
+		kv := value.(kvPair)
 		if matched, _ := path.Match(pattern, kv.Key); matched {
 			kvs = append(kvs, kv)
 		}
@@ -56,9 +56,9 @@ func (s *StoreX) GetAll(pattern string) (KVPairs, error) {
 	return kvs, nil
 }
 
-func (s *StoreX) GetAllValues(pattern string) ([]string, error) {
+func (s *storeX) GetVs(pattern string) ([]string, error) {
 	vs := make([]string, 0)
-	kvs, err := s.GetAll(pattern)
+	kvs, err := s.getAll(pattern)
 	if err != nil {
 		return nil, err
 	}
@@ -69,9 +69,9 @@ func (s *StoreX) GetAllValues(pattern string) ([]string, error) {
 	return vs, nil
 }
 
-func (s *StoreX) Del(key string) { s.m.Delete(key) }
+func (s *storeX) Del(key string) { s.m.Delete(key) }
 
-func (s *StoreX) Purge() {
+func (s *storeX) purge() {
 	s.m.Range(func(key, _ interface{}) bool {
 		s.m.Delete(key)
 		return true

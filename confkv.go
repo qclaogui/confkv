@@ -10,7 +10,7 @@ import (
 
 var defaultPrefix = "/"
 
-var DB *StoreX
+var DB *storeX
 
 func init() { DB = NewStoreX() }
 

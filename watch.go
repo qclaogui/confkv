@@ -38,7 +38,7 @@ func (wp *watchProcessor) Process() {
 		}
 
 		waitIndex = index
-		log.Printf("Key prefix set to %v\n", wp.config.prefix)
+		log.Printf("Key prefix Set to %v\n", wp.config.prefix)
 		result, err := wp.config.bs.GetValues(keys)
 		if err != nil {
 			wp.errChan <- err
@@ -46,7 +46,7 @@ func (wp *watchProcessor) Process() {
 		log.Printf("Got the following map from backend: %v\n\n", result)
 
 		// 重新赋值
-		DB.Purge()
+		DB.purge()
 		for k, v := range result {
 			DB.Set(k, v)
 		}

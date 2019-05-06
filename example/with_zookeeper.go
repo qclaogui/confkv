@@ -19,9 +19,9 @@ func main() {
 		kv.Zookeeper("127.0.0.1:2181", "127.0.0.1:2182"))
 	time.Sleep(time.Second)
 
-	vs, err := kv.DB.GetAllValues("/app/upstream/*")
+	vs, err := kv.DB.GetVs("/app/upstream/*")
 	if err != nil {
-		fmt.Printf("GetAllValues error %v \n\n", err)
+		fmt.Printf("GetVs error %v \n\n", err)
 	}
 	fmt.Printf("%v \n\n", vs)
 

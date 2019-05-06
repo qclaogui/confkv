@@ -1,21 +1,21 @@
 package kv
 
 // 有序键值对
-type KVPair struct {
+type kvPair struct {
 	Key   string
 	Value string
 }
 
-type KVPairs []KVPair
+type kvPairs []kvPair
 
-func (ks KVPairs) Len() int {
+func (ks kvPairs) Len() int {
 	return len(ks)
 }
 
-func (ks KVPairs) Less(i, j int) bool {
+func (ks kvPairs) Less(i, j int) bool {
 	return ks[i].Key < ks[j].Key
 }
 
-func (ks KVPairs) Swap(i, j int) {
+func (ks kvPairs) Swap(i, j int) {
 	ks[i], ks[j] = ks[j], ks[i]
 }

@@ -1,8 +1,8 @@
 package kv
 
-const ErrNotExist = KVError("key does not exist")
-const ErrNoMatch = KVError("no keys match")
+const ErrNotExist = kvError("key does not exist")
+const ErrNoMatch = kvError("no keys match")
 
-type KVError string
+type kvError string
 
-func (e KVError) Error() string { return string(e) }
+func (e kvError) Error() string { return string(e) }
