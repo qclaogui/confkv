@@ -1,18 +1,18 @@
-package confkv
+package kv
 
 import (
 	"log"
 	"path"
 	"time"
 
-	"github.com/qclaogui/confkv/backends"
+	"github.com/qclaogui/kv/backends"
 )
 
 var defaultPrefix = "/"
 
-var Store *StoreX
+var DB *StoreX
 
-func init() { Store = NewStoreX() }
+func init() { DB = NewStoreX() }
 
 type conf struct {
 	prefix string

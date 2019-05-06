@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qclaogui/confkv"
+	"github.com/qclaogui/kv"
 )
 
 var keys = []string{
@@ -13,10 +13,10 @@ var keys = []string{
 }
 
 func main() {
-	defer confkv.Watch(confkv.Keys(keys)).Stop()
+	defer kv.Watch(kv.Keys(keys)).Stop()
 	time.Sleep(time.Second)
 
-	vs, err := confkv.Store.GetAllValues("/app/upstream/*")
+	vs, err := kv.DB.GetAllValues("/app/upstream/*")
 	if err != nil {
 		fmt.Printf("GetAllValues error %v \n\n", err)
 	}

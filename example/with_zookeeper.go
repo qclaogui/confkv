@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qclaogui/confkv"
+	"github.com/qclaogui/kv"
 )
 
 var prefix = "/app"
@@ -15,11 +15,11 @@ var keysHasPrefix = []string{
 	"/upstream/host2"}
 
 func main() {
-	ckv := confkv.Watch(confkv.Prefix(prefix), confkv.Keys(keysHasPrefix),
-		confkv.Zookeeper("127.0.0.1:2181", "127.0.0.1:2182"))
+	ckv := kv.Watch(kv.Prefix(prefix), kv.Keys(keysHasPrefix),
+		kv.Zookeeper("127.0.0.1:2181", "127.0.0.1:2182"))
 	time.Sleep(time.Second)
 
-	vs, err := confkv.Store.GetAllValues("/app/upstream/*")
+	vs, err := kv.DB.GetAllValues("/app/upstream/*")
 	if err != nil {
 		fmt.Printf("GetAllValues error %v \n\n", err)
 	}

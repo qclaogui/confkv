@@ -3,7 +3,7 @@ package backends
 import (
 	"errors"
 
-	"github.com/qclaogui/confkv/backends/zookeeper"
+	"github.com/qclaogui/kv/backends/zookeeper"
 )
 
 type BackendStore interface {

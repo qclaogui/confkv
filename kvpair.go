@@ -1,4 +1,4 @@
-package confkv
+package kv
 
 // 有序键值对
 type KVPair struct {

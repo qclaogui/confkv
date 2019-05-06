@@ -1,4 +1,4 @@
-module github.com/qclaogui/confkv
+module github.com/qclaogui/kv
 
 go 1.12
 

@@ -1,4 +1,4 @@
-package confkv
+package kv
 
 import (
 	"testing"

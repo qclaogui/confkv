@@ -1,4 +1,4 @@
-package confkv
+package kv
 
 import (
 	"log"
@@ -46,9 +46,9 @@ func (wp *watchProcessor) Process() {
 		log.Printf("Got the following map from backend: %v\n\n", result)
 
 		// 重新赋值
-		Store.Purge()
+		DB.Purge()
 		for k, v := range result {
-			Store.Set(k, v)
+			DB.Set(k, v)
 		}
 	}
 }
