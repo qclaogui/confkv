@@ -2,5 +2,7 @@ github.com/google/go-cmp v0.3.0 h1:crn/baboCvb5fXaQ0IJ1SGTsTVrWpDsCWC8EGETZijY=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/qclaogui/kvdb v0.0.0-20190506122552-69d07b921d3a h1:0W9K0beuOzjl9dW05tx+dwwFUrSYrWFhTyWHhfCdYFY=
 github.com/qclaogui/kvdb v0.0.0-20190506122552-69d07b921d3a/go.mod h1:MNIpz+qOTrymDdDyTswZ6iKb2rRbnGOKcrZhHuDSgDY=
+github.com/qclaogui/kvdb v0.0.1 h1:EAJ93Qn/fpg98em8xEgWzKFNCNSFgESEKGvBH6nzcvM=
+github.com/qclaogui/kvdb v0.0.1/go.mod h1:MNIpz+qOTrymDdDyTswZ6iKb2rRbnGOKcrZhHuDSgDY=
 github.com/samuel/go-zookeeper v0.0.0-20180130194729-c4fab1ac1bec h1:6ncX5ko6B9LntYM0YBRXkiSaZMmLYeZ/NWcmeB43mMY=
 github.com/samuel/go-zookeeper v0.0.0-20180130194729-c4fab1ac1bec/go.mod h1:gi+0XIa01GRL2eRQVjQkKGqKF3SF9vZR/HnPullcV2E=
