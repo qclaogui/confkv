@@ -12,7 +12,7 @@ var defaultPrefix = "/"
 
 var DB *storeX
 
-func init() { DB = NewStoreX() }
+func init() { DB = NewDB() }
 
 type conf struct {
 	prefix string

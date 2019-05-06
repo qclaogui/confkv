@@ -20,7 +20,7 @@ func TestStoreX_GetValue(t *testing.T) {
 		"case3": {"/missing", "", kv.ErrNotExist, ""},
 	}
 
-	db := kv.NewStoreX()
+	db := kv.NewDB()
 	for name, test := range tests {
 		// Set first
 		if test.err == nil {
@@ -40,7 +40,7 @@ func TestStoreX_GetValue(t *testing.T) {
 
 func TestGetValueWithDefault(t *testing.T) {
 	want := "defaultValue"
-	db := kv.NewStoreX()
+	db := kv.NewDB()
 
 	got, err := db.GetV("/db/user", "defaultValue")
 	if df := cmp.Diff(err, nil); df != "" {
@@ -53,7 +53,7 @@ func TestGetValueWithDefault(t *testing.T) {
 
 func TestGetValueWithEmptyDefault(t *testing.T) {
 	want := ""
-	db := kv.NewStoreX()
+	db := kv.NewDB()
 
 	got, err := db.GetV("/db/user", "")
 	if df := cmp.Diff(err, nil); df != "" {

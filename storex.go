@@ -8,7 +8,7 @@ import (
 
 type storeX struct{ m *sync.Map }
 
-func NewStoreX() *storeX { return &storeX{new(sync.Map)} }
+func NewDB() *storeX { return &storeX{new(sync.Map)} }
 
 func (s *storeX) Set(key, value string) { s.m.Store(key, kvPair{key, value}) }
 

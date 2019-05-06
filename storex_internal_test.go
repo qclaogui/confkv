@@ -17,7 +17,7 @@ func TestStoreX_Get(t *testing.T) {
 		"case2": {"/db/pass", "foo", nil, kvPair{"/db/pass", "foo"}},
 		"case3": {"/missing", "", ErrNotExist, kvPair{}},
 	}
-	db := NewStoreX()
+	db := NewDB()
 	for name, test := range tests {
 		// Set first
 		if test.err == nil {
@@ -71,7 +71,7 @@ var getalltests = map[string]struct {
 }
 
 func TestStoreX_GetAll(t *testing.T) {
-	db := NewStoreX()
+	db := NewDB()
 	for key, value := range getalltestinput {
 		db.Set(key, value)
 	}
@@ -90,7 +90,7 @@ func TestStoreX_GetAll(t *testing.T) {
 }
 
 func TestDel(t *testing.T) {
-	db := NewStoreX()
+	db := NewDB()
 	db.Set("/app/port", "8080")
 	want := kvPair{"/app/port", "8080"}
 	got, err := db.get("/app/port")
