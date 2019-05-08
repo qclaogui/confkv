@@ -25,12 +25,12 @@ func nodeWalk(prefix string, c *Client, vars map[string]string) error {
 	var s string
 	l, stat, err := c.client.Children(prefix)
 	if err != nil {
-		return fmt.Errorf("here1 %q: %v", prefix, err)
+		return fmt.Errorf("%q: %v", prefix, err)
 	}
 	if stat.NumChildren == 0 {
 		b, _, err := c.client.Get(prefix)
 		if err != nil {
-			return fmt.Errorf("here2 got %q: %v", prefix, err)
+			return fmt.Errorf("got %q: %v", prefix, err)
 		}
 		vars[prefix] = string(b)
 	} else {
@@ -42,13 +42,13 @@ func nodeWalk(prefix string, c *Client, vars map[string]string) error {
 			}
 			_, stat, err := c.client.Exists(s)
 			if err != nil {
-				return fmt.Errorf("here3 %q: %v", s, err)
+				return fmt.Errorf("%q: %v", s, err)
 			}
 			if stat.NumChildren == 0 {
 				b, _, err := c.client.Get(s)
 				// value 没有可以容忍吧
 				if err != nil {
-					return fmt.Errorf("here4 got %q: %v", s, err)
+					return fmt.Errorf("got %q: %v", s, err)
 				}
 				vars[s] = string(b)
 			} else {
