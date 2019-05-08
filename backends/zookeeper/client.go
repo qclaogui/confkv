@@ -1,6 +1,7 @@
 package zookeeper
 
 import (
+	"fmt"
 	"log"
 	"path/filepath"
 	"strings"
@@ -24,12 +25,12 @@ func nodeWalk(prefix string, c *Client, vars map[string]string) error {
 	var s string
 	l, stat, err := c.client.Children(prefix)
 	if err != nil {
-		return err
+		return fmt.Errorf("here1 %q: %v", prefix, err)
 	}
 	if stat.NumChildren == 0 {
 		b, _, err := c.client.Get(prefix)
 		if err != nil {
-			return err
+			return fmt.Errorf("here2 got %q: %v", prefix, err)
 		}
 		vars[prefix] = string(b)
 	} else {
@@ -41,12 +42,13 @@ func nodeWalk(prefix string, c *Client, vars map[string]string) error {
 			}
 			_, stat, err := c.client.Exists(s)
 			if err != nil {
-				return err
+				return fmt.Errorf("here3 %q: %v", s, err)
 			}
 			if stat.NumChildren == 0 {
 				b, _, err := c.client.Get(s)
+				// value 没有可以容忍吧
 				if err != nil {
-					return err
+					return fmt.Errorf("here4 got %q: %v", s, err)
 				}
 				vars[s] = string(b)
 			} else {
@@ -62,9 +64,8 @@ func (c *Client) GetValues(keys []string) (map[string]string, error) {
 		v = strings.Replace(v, "/*", "", -1)
 		_, _, err := c.client.Exists(v)
 		if err != nil {
-			return vars, err
+			return vars, fmt.Errorf("Oops %q: %s", v, err.Error())
 		}
-
 		err = nodeWalk(v, c, vars)
 		if err != nil {
 			return vars, err
@@ -105,7 +106,7 @@ func (c *Client) WatchPrefix(prefix string, keys []string, waitIndex uint64, sto
 				for dir := filepath.Dir(k); dir != "/"; dir = filepath.Dir(dir) {
 					if _, ok := watchMap[dir]; !ok {
 						watchMap[dir] = ""
-						log.Printf("Watching: %v\n", dir)
+						log.Printf("Watching sub folders: %v\n", dir)
 						go c.watch(dir, respChan, cancel)
 					}
 				}

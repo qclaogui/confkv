@@ -75,10 +75,12 @@ func Watch(options ...func(*conf)) interface {
 	p := &watchProcessor{c, stopChan, errChan}
 	go p.Process()
 
-	select {
-	case err := <-errChan:
-		log.Printf("ERROR %v\n", err.Error())
-	default:
-	}
+	// Track errors
+	go func() {
+		for err := range errChan {
+			log.Printf("ERROR %v\n", err.Error())
+		}
+	}()
+
 	return &c
 }
