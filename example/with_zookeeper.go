@@ -18,8 +18,8 @@ var keysHasPrefix = []string{
 	"/upstream/host2"}
 
 func main() {
-	ckv := kv.Watch(kv.Prefix(prefix), kv.Keys(keysHasPrefix),
-		kv.Zookeeper("127.0.0.1:2181", "127.0.0.1:2182"))
+	defer kv.Watch(kv.Prefix(prefix), kv.Keys(keysHasPrefix),
+		kv.Zookeeper("127.0.0.1:2181", "127.0.0.1:2182")).Stop()
 
 	// 等待从后端获取配置 然后第一次加载到内存 浪费点启动内存
 	time.Sleep(time.Second)
@@ -38,6 +38,4 @@ func main() {
 		default:
 		}
 	}
-
-	ckv.Stop()
 }

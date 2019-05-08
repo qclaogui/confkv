@@ -13,7 +13,7 @@ func main() {
 		"/upstream/host1",
 		"/upstream/host2"}
 
-	defer kv.Watch(kv.Prefix(prefix), kv.Keys(keysHasPrefix)).Stop()
+	ckv := kv.Watch(kv.Prefix(prefix), kv.Keys(keysHasPrefix))
 	time.Sleep(time.Second)
 
 	vs, err := kv.DB.GetVs("/app/upstream/*")
@@ -22,4 +22,6 @@ func main() {
 	}
 
 	fmt.Printf("%v \n\n", vs)
+
+	ckv.Stop()
 }
