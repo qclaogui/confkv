@@ -27,9 +27,9 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	for range time.Tick(5 * time.Second) {
-		vs, err := kv.DB.GetVs("/app/upstream/*")
+		vs, err := kv.Store().GetMany("/app/upstream/*")
 		if err != nil {
-			fmt.Printf("GetVs error %v \n\n", err)
+			fmt.Printf("GetMany error %v \n\n", err)
 		}
 		fmt.Printf("%v \n\n", vs)
 		select {

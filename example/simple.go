@@ -16,10 +16,10 @@ func main() {
 	defer kv.Watch(kv.Keys(keys)).Stop()
 	time.Sleep(time.Second)
 
-	vs, err := kv.DB.GetVs("/app/upstream/*")
+	vs, err := kv.Store().GetMany("/app/upstream/*")
 	if err != nil {
-		fmt.Printf("GetVs error %v \n\n", err)
+		fmt.Printf("GetMany error %v \n\n", err)
 	}
-	fmt.Printf("%v \n\n", vs)
 
+	fmt.Printf("%v \n\n", vs)
 }

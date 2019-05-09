@@ -11,9 +11,11 @@ import (
 
 var defaultPrefix = "/"
 
-var DB *kvdb.Store
+var mem kvdb.Storage
 
-func init() { DB = kvdb.NewDB() }
+func init() { mem = kvdb.NewMem() }
+
+func Store() kvdb.Storage { return mem }
 
 type conf struct {
 	prefix string
