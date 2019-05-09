@@ -3,8 +3,6 @@
   <h1>kv</h1>
 </div>
 
-> This project is under development, do not use in production!
-
 </div>
 <p align="center">
 <a href="https://travis-ci.org/qclaogui/kv"><img src="https://travis-ci.org/qclaogui/kv.svg?branch=master"></a>
@@ -12,6 +10,8 @@
 <a href="https://godoc.org/github.com/qclaogui/kv"><img src="https://godoc.org/github.com/qclaogui/kv?status.svg"></a>
 <a href="https://github.com/qclaogui/kv/blob/master/LICENSE"><img src="https://img.shields.io/github/license/qclaogui/kv.svg" alt="License"></a>
 </p>
+
+> This project is under development, do not use in production!
 
 
 ## Usage
