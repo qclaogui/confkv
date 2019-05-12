@@ -25,14 +25,22 @@ import (
 	"github.com/qclaogui/kv"
 )
 
+var prefix = "/app"
+
 var keys = []string{
-	"/app/upstream/host1",
-	"/app/upstream/host2",
+	"/upstream/host1",
+	"/upstream/host2",
 }
 
 func main() {
-	defer kv.Watch(kv.Keys(keys)).Stop()
+	defer kv.Watch(prefix, keys, kv.BackendOption.Zookeeper()).Stop()
 	time.Sleep(time.Second)
+    
+	v, err := kv.Store().Get("/app/upstream/host1")
+	if err != nil {
+		fmt.Printf("Get error %v \n\n", err)
+	}
+	fmt.Printf("Get %v \n\n", v)
 
 	vs, err := kv.Store().GetMany("/app/upstream/*")
 	if err != nil {

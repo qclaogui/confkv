@@ -1,15 +1,14 @@
 package kv
 
 import (
-	"log"
 	"path"
 	"time"
+
+	"github.com/qclaogui/kv/log"
 
 	"github.com/qclaogui/kv/backends"
 	"github.com/qclaogui/kvdb"
 )
-
-var defaultPrefix = "/"
 
 var mem kvdb.Storage
 
@@ -20,31 +19,10 @@ func Store() kvdb.Storage { return mem }
 type conf struct {
 	prefix string
 	keys   []string
+	log    log.Logger
 	bs     backends.BackendStore
 	// closer holds a cleanup function that run after
 	closer func()
-}
-
-// 设置keys的Prefix
-func Prefix(prefix string) func(*conf) {
-	return func(c *conf) { c.prefix = path.Join("/", prefix) }
-}
-
-// 设置Keys
-func Keys(keys []string) func(*conf) {
-	return func(c *conf) { c.keys = keys }
-}
-
-// 设置后端KV获取位置为Zookeeper
-func Zookeeper(nodes ...string) func(*conf) {
-	bs, err := backends.New(&backends.BackendConfig{
-		Backend:      "zookeeper",
-		BackendNodes: nodes})
-
-	if err != nil {
-		log.Fatalf("backends.New error %v\n", err)
-	}
-	return func(c *conf) { c.bs = bs }
 }
 
 func (c *conf) Stop() {
@@ -52,20 +30,27 @@ func (c *conf) Stop() {
 	time.Sleep(500 * time.Millisecond)
 }
 
-func Watch(options ...func(*conf)) interface {
+func Watch(prefix string, keys []string, options ...func(*conf)) interface {
 	Stop()
 } {
 	var c conf
+	if prefix == "" {
+		c.prefix = "/"
+	} else {
+		c.prefix = path.Join("/", prefix)
+	}
+	c.keys = keys
+
 	for _, opt := range options {
 		opt(&c)
 	}
 
-	if c.prefix == "" {
-		c.prefix = defaultPrefix
-	}
-	// 假如没有设置后端数据源，默认使用Zookeeper
 	if c.bs == nil {
-		Zookeeper()(&c)
+		Options.Zookeeper()(&c)
+	}
+
+	if c.log == nil {
+		c.log = log.NullLogger
 	}
 
 	stopChan := make(chan bool)
@@ -80,7 +65,7 @@ func Watch(options ...func(*conf)) interface {
 	// Track errors
 	go func() {
 		for err := range errChan {
-			log.Printf("ERROR %v\n", err.Error())
+			c.log.Error(err.Error())
 		}
 	}()
 

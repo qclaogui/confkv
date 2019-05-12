@@ -1,7 +1,6 @@
 package kv
 
 import (
-	"log"
 	"path"
 	"time"
 )
@@ -26,7 +25,6 @@ func (wp *watchProcessor) Process() {
 	for {
 		index, err := wp.config.bs.WatchPrefix(wp.config.prefix, keys, waitIndex, wp.stopChan)
 		if err != nil {
-			log.Printf("WatchPrefix error: %v\n", err)
 			wp.errChan <- err
 			// Prevent backend errors from consuming all resources.
 			time.Sleep(time.Second * 2)
@@ -38,12 +36,11 @@ func (wp *watchProcessor) Process() {
 		}
 
 		waitIndex = index
-		log.Printf("Key prefix Set to %v\n", wp.config.prefix)
 		result, err := wp.config.bs.GetValues(keys)
 		if err != nil {
 			wp.errChan <- err
 		}
-		log.Printf("Got the following map from backend: %v\n\n", result)
+		wp.config.log.Infof("Got the following map from backend: %v\n\n", result)
 
 		// 重新赋值
 		mem.Flush()

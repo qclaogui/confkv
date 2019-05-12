@@ -81,7 +81,6 @@ type watchResponse struct {
 }
 
 func (c *Client) WatchPrefix(prefix string, keys []string, waitIndex uint64, stopChan chan bool) (uint64, error) {
-	log.Printf("waitIndex: %v\n", waitIndex)
 	// return something > 0 to trigger a key retrieval from the store
 	if waitIndex == 0 {
 		return 1, nil
@@ -90,7 +89,6 @@ func (c *Client) WatchPrefix(prefix string, keys []string, waitIndex uint64, sto
 	entries, err := c.GetValues([]string{prefix})
 	//log.Printf("entries: %v\n", entries)
 	if err != nil {
-		log.Printf("c.GetValues error: %v\n", err)
 		return 0, err
 	}
 
@@ -106,7 +104,6 @@ func (c *Client) WatchPrefix(prefix string, keys []string, waitIndex uint64, sto
 				for dir := filepath.Dir(k); dir != "/"; dir = filepath.Dir(dir) {
 					if _, ok := watchMap[dir]; !ok {
 						watchMap[dir] = ""
-						log.Printf("Watching sub folders: %v\n", dir)
 						go c.watch(dir, respChan, cancel)
 					}
 				}
@@ -119,7 +116,6 @@ func (c *Client) WatchPrefix(prefix string, keys []string, waitIndex uint64, sto
 	for k, _ := range entries {
 		for _, v := range keys {
 			if strings.HasPrefix(k, v) {
-				log.Printf("Watching: %v\n", k)
 				go c.watch(k, respChan, cancel)
 				break
 			}
@@ -129,7 +125,6 @@ func (c *Client) WatchPrefix(prefix string, keys []string, waitIndex uint64, sto
 	for {
 		select {
 		case <-stopChan:
-			log.Println("stopChan got sig")
 			return 500, nil
 		case r := <-respChan:
 			return r.waitIndex, r.err
