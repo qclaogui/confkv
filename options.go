@@ -12,7 +12,7 @@ var Options options
 
 type options struct{}
 
-func (options) WithLog(l log.Logger) func(*conf) {
+func (options) WithLogger(l log.Logger) func(*conf) {
 	return func(c *conf) { c.log = l }
 }
 

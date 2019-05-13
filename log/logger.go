@@ -16,7 +16,7 @@ var StdLogger = &stdLogger{}
 type stdLogger struct{}
 
 func (l *stdLogger) Error(msg string) {
-	log.Printf("ERROR: %s", msg)
+	log.Printf("\x1b[91mERROR: %s\x1b[39m", msg)
 }
 
 // Infof logs a message at info priority

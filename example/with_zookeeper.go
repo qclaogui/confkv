@@ -7,6 +7,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/qclaogui/kv/log"
+
 	"github.com/qclaogui/kv"
 )
 
@@ -18,21 +20,24 @@ var keys = []string{
 	"/upstream/host2"}
 
 func main() {
-	defer kv.Watch(prefix, keys, kv.Options.Zookeeper()).Stop()
+	defer kv.Watch(prefix, keys,
+		kv.Options.WithLogger(log.StdLogger),
+		kv.Options.Zookeeper(),
+	).Stop()
 
 	// 等待从后端获取配置 然后第一次加载到内存 浪费点启动内存
 	time.Sleep(time.Second)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-	for range time.Tick(5 * time.Second) {
-		v, err := kv.Store().Get("/app/upstream/host1")
+	for range time.Tick(3 * time.Second) {
+		v, err := kv.GetV("/app/upstream/host1")
 		if err != nil {
 			fmt.Printf("Get error %v \n\n", err)
 		}
 		fmt.Printf("Get %v \n\n", v)
 
-		vs, err := kv.Store().GetMany("/app/upstream/*")
+		vs, err := kv.GetVs("/app/upstream/*")
 		if err != nil {
 			fmt.Printf("GetMany error %v \n\n", err)
 		}

@@ -14,7 +14,16 @@ var mem kvdb.Storage
 
 func init() { mem = kvdb.NewMem() }
 
-func Store() kvdb.Storage { return mem }
+// 检查某个key是否存在
+func Exists(key string) bool { return mem.Exists(key) }
+
+// GetVs 获取相应key的value
+func GetV(key string, defaultValue ...string) (string, error) {
+	return mem.Get(key, defaultValue...)
+}
+
+// GetVs 获取匹配到pattern的所有keys的value
+func GetVs(pattern string) ([]string, error) { return mem.GetMany(pattern) }
 
 type conf struct {
 	prefix string

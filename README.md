@@ -33,16 +33,17 @@ var keys = []string{
 }
 
 func main() {
-	defer kv.Watch(prefix, keys, kv.BackendOption.Zookeeper()).Stop()
+	defer kv.Watch(prefix, keys).Stop()
 	time.Sleep(time.Second)
     
-	v, err := kv.Store().Get("/app/upstream/host1")
+	v, err := kv.GetV("/app/upstream/host1")
 	if err != nil {
 		fmt.Printf("Get error %v \n\n", err)
 	}
+	
 	fmt.Printf("Get %v \n\n", v)
 
-	vs, err := kv.Store().GetMany("/app/upstream/*")
+	vs, err := kv.GetVs("/app/upstream/*")
 	if err != nil {
 		fmt.Printf("GetMany error %v \n\n", err)
 	}
