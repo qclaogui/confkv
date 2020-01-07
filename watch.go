@@ -40,7 +40,13 @@ func (wp *watchProcessor) Process() {
 		if err != nil {
 			wp.errChan <- err
 		}
-		wp.config.log.Infof("Got the following map from backend: %v\n\n", result)
+
+		totalSize := 0
+		for _, v := range result {
+			totalSize += len(v)
+		}
+
+		wp.config.log.Infof("Got the following map from backend:[size: \x1b[92m%d\x1b[39m] %v\n\n", totalSize, result)
 
 		// 重新赋值
 		mem.Flush()
